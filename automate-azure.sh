@@ -8,7 +8,7 @@
 
 # --- CONFIGURATION (Feel free to change) ---
 RESOURCE_GROUP="PP_Resources"
-LOCATION="eastus"
+LOCATION="centralindia"
 SQL_SERVER_NAME="pp-sql-server-$RANDOM"
 SQL_DB_NAME="ppdb"
 SQL_ADMIN_USER="dbadmin"
@@ -44,7 +44,7 @@ az webapp create --resource-group $RESOURCE_GROUP --plan $APP_SERVICE_PLAN --nam
 
 # 4. Create Static Web App for Frontend
 echo "Creating Static Web App: $SWA_NAME..."
-SWA_TOKEN=$(az staticwebapp create --name $SWA_NAME --resource-group $RESOURCE_GROUP --source $REPO_URL --location $LOCATION --branch main --app-location "/client" --output-location ".next" --query "properties.apiKey" -o tsv)
+SWA_TOKEN=$(az staticwebapp create --name $SWA_NAME --resource-group $RESOURCE_GROUP --source $REPO_URL --location $LOCATION --branch main --app-location "/client" --output-location ".next" --login-with-github --query "properties.apiKey" -o tsv)
 
 # 5. Entra ID App Registration (CIAM)
 echo "Registering Entra ID Apps..."
