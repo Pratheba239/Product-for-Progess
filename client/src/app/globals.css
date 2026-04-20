@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Neon Pulse Cyberpunk Palette */
+  --bg-primary: #080808;
+  --bg-secondary: #121212;
+  --bg-accent: #1A1A1A;
+  
+  --neon-green: #39FF14;
+  --neon-green-glow: rgba(57, 255, 20, 0.4);
+  
+  --neon-cyan: #00F0FF;
+  --neon-cyan-glow: rgba(0, 240, 255, 0.4);
+  
+  --neon-red: #FF3131;
+  --neon-red-glow: rgba(255, 49, 49, 0.4);
+  
+  --neon-amber: #FFB000;
+  --neon-amber-glow: rgba(255, 176, 0, 0.4);
+  
+  --text-primary: #FFFFFF;
+  --text-secondary: #A0A0A0;
+  --text-dim: #606060;
+  
+  /* Layout Constants */
+  --sidebar-width: 100px;
+  --panel-right-width: 350px;
+  --border-radius: 4px; /* Sharper, tech feel */
+  --border-radius-lg: 12px;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+code, .mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+h1, h2, h3, h4, .terminal-text {
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Neon Glow Utilities */
+.glow-green {
+  box-shadow: 0 0 15px var(--neon-green-glow);
+  border: 1px solid var(--neon-green);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 15px var(--neon-cyan-glow);
+  border: 1px solid var(--neon-cyan);
+}
+
+.glow-red {
+  box-shadow: 0 0 15px var(--neon-red-glow);
+  border: 1px solid var(--neon-red);
+}
+
+.text-glow-green { text-shadow: 0 0 8px var(--neon-green-glow); color: var(--neon-green); }
+.text-glow-cyan { text-shadow: 0 0 8px var(--neon-cyan-glow); color: var(--neon-cyan); }
+.text-glow-red { text-shadow: 0 0 8px var(--neon-red-glow); color: var(--neon-red); }
+
+/* Card Components */
+.neon-card {
+  background: var(--bg-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--border-radius-lg);
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.neon-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.neon-card:hover::after {
+  opacity: 1;
+}
+
+.neon-card:hover {
+  background: var(--bg-accent);
+  border-color: rgba(0, 240, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-accent);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-cyan);
+}
+
