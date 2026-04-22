@@ -7,15 +7,16 @@
 # ==============================================================================
 
 # --- CONFIGURATION (Feel free to change) ---
-RESOURCE_GROUP="PP_Resources"
-LOCATION="centralindia"
-SQL_SERVER_NAME="pp-sql-server-$RANDOM"
+RESOURCE_GROUP="PP_App_Resources"
+LOCATION="southeastasia" # Found via policy check: Subscription allows [austriaeast, uaenorth, southeastasia, koreacentral, malaysiawest]
+RANDOM_ID=$RANDOM
+SQL_SERVER_NAME="pp-sql-$RANDOM_ID"
 SQL_DB_NAME="ppdb"
 SQL_ADMIN_USER="dbadmin"
 SQL_ADMIN_PASSWORD="Once@time26"
-APP_SERVICE_NAME="pp-backend-api-$RANDOM"
+APP_SERVICE_NAME="pp-api-$RANDOM_ID"
 APP_SERVICE_PLAN="pp-backend-plan"
-SWA_NAME="pp-frontend"
+SWA_NAME="pp-frontend-$RANDOM_ID"
 REPO_URL="https://github.com/Pratheba239/Product-for-Progess"
 # -------------------------------------------
 
@@ -29,15 +30,16 @@ az group create --name $RESOURCE_GROUP --location $LOCATION
 echo "Creating Azure SQL Server ($SQL_SERVER_NAME)..."
 az sql server create --name $SQL_SERVER_NAME --resource-group $RESOURCE_GROUP --location $LOCATION --admin-user $SQL_ADMIN_USER --admin-password "$SQL_ADMIN_PASSWORD"
 
-echo "Creating Database: $SQL_DB_NAME..."
-az sql db create --resource-group $RESOURCE_GROUP --server $SQL_SERVER_NAME --name $SQL_DB_NAME --service-objective S0
+echo "Creating Database: $SQL_DB_NAME (Standard Free Tier)..."
+# Using GeneralPurpose Serverless for SQL Free Offer compatibility
+az sql db create --resource-group $RESOURCE_GROUP --server $SQL_SERVER_NAME --name $SQL_DB_NAME --edition GeneralPurpose --compute-model Serverless --family Gen5 --capacity 0.5
 
 echo "Opening Firewall for Azure Services..."
 az sql server firewall-rule create --resource-group $RESOURCE_GROUP --server $SQL_SERVER_NAME --name AllowAzureServices --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0
 
 # 3. Create Web App for Backend
-echo "Creating App Service Plan..."
-az appservice plan create --name $APP_SERVICE_PLAN --resource-group $RESOURCE_GROUP --sku B1 --is-linux
+echo "Creating App Service Plan (FREE F1 TIER)..."
+az appservice plan create --name $APP_SERVICE_PLAN --resource-group $RESOURCE_GROUP --sku F1 --is-linux
 
 echo "Creating Web App: $APP_SERVICE_NAME..."
 az webapp create --resource-group $RESOURCE_GROUP --plan $APP_SERVICE_PLAN --name $APP_SERVICE_NAME --runtime "NODE:20-lts"

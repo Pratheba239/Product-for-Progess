@@ -18,10 +18,13 @@ if (!admin.apps.length) {
     try {
         const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT || "{}");
         if (Object.keys(serviceAccount).length > 0) {
-            admin.initializeApp({
-                credential: admin.credential.cert(serviceAccount),
-                storageBucket: process.env.FIREBASE_STORAGE_BUCKET
-            });
+            const appOptions: any = {
+                credential: admin.credential.cert(serviceAccount)
+            };
+            if (process.env.FIREBASE_STORAGE_BUCKET) {
+                appOptions.storageBucket = process.env.FIREBASE_STORAGE_BUCKET;
+            }
+            admin.initializeApp(appOptions);
         } else {
             console.warn("Firebase service account not provided. Storage functionality will be limited.");
         }

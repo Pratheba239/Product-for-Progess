@@ -25,7 +25,11 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
         return res.status(401).json({ error: 'AUTHENTICATION_REQUIRED' });
     }
 
-    const token = authHeader.split(' ')[1];
+    const parts = authHeader.split(' ');
+    if (parts.length < 2) {
+        return res.status(401).json({ error: 'INVALID_AUTH_HEADER' });
+    }
+    const token = parts[1]!;
     
     try {
         if (!process.env.AZURE_AD_JWKS_URL) {
@@ -34,8 +38,8 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
 
         const JWKS = createRemoteJWKSet(new URL(process.env.AZURE_AD_JWKS_URL));
         const { payload } = await jwtVerify(token, JWKS, {
-            issuer: process.env.AZURE_AD_ISSUER,
-            audience: process.env.AZURE_AD_CLIENT_ID,
+            issuer: process.env.AZURE_AD_ISSUER as string,
+            audience: process.env.AZURE_AD_CLIENT_ID as string,
         });
 
         req.user = payload;

@@ -10,12 +10,11 @@ export default {
     connection: {
       server: process.env.DB_HOST || 'localhost',
       user: process.env.DB_USER || 'sa',
-      password: process.env.DB_PASSWORD || '',
+      password: process.env.DB_PASSWORD || 'YourStrong!Passw0rd',
       database: process.env.DB_NAME || 'ppdb',
       options: {
-        encrypt: true, // For Azure SQL
-        enableArithAbort: true,
-        trustServerCertificate: true // Useful for local dev if certificate isn't trusted
+        encrypt: false, // For local dev, usually false
+        trustServerCertificate: true
       }
     },
     pool: {
@@ -24,23 +23,23 @@ export default {
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: './src/migrations'
+      directory: './src/db/migrations'
     },
     seeds: {
-      directory: './src/seeds'
+      directory: './src/db/seeds'
     }
   },
 
   production: {
     client: 'mssql',
-    connection: {
+    connection: process.env.DATABASE_URL || {
       server: process.env.DB_HOST,
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       options: {
-        encrypt: true,
-        enableArithAbort: true
+        encrypt: true, // Required for Azure SQL
+        trustServerCertificate: false
       }
     },
     pool: {
@@ -49,10 +48,10 @@ export default {
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: './src/migrations'
+      directory: './src/db/migrations'
     },
     seeds: {
-      directory: './src/seeds'
+      directory: './src/db/seeds'
     }
   }
 };

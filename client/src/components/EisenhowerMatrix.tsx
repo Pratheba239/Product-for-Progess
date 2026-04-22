@@ -17,12 +17,12 @@ const Quadrant = ({ id, title, glowColor, children }: QuadrantProps) => {
   return (
     <div 
       ref={setNodeRef} 
-      className={`quadrant-node ${isOver ? 'target-active' : ''}`}
-      style={{ '--glow-color': glowColor } as React.CSSProperties}
+      className={`quadrant-node glass-panel ${isOver ? 'target-active' : ''}`}
+      style={{ '--glow-color': glowColor, '--glow-rgba': glowColor.replace('var(--', 'var(--rgba-') } as React.CSSProperties}
     >
       <div className="node-header">
         <div className="status-bit"></div>
-        <h4 className="mono">{title}</h4>
+        <h4 className="mono tracking-tighter text-[10px] opacity-70">{title}</h4>
       </div>
       
       <div className="node-grid-overlay"></div>
@@ -34,21 +34,28 @@ const Quadrant = ({ id, title, glowColor, children }: QuadrantProps) => {
       <style jsx>{`
         .quadrant-node {
           flex: 1;
-          min-height: 320px;
-          background: rgba(18, 18, 18, 0.4);
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          border-radius: 4px;
-          padding: 1.5rem;
+          min-height: 380px;
+          border-radius: var(--border-radius);
+          padding: 1.25rem;
           position: relative;
           overflow: hidden;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .quadrant-node::before {
+          content: '';
+          position: absolute;
+          top: 0; left: 0; width: 4px; height: 100%;
+          background: var(--glow-color);
+          opacity: 0.3;
         }
 
         .quadrant-node.target-active {
-          background: rgba(var(--glow-color), 0.05);
+          background: rgba(255, 255, 255, 0.03);
           border-color: var(--glow-color);
-          box-shadow: inset 0 0 20px rgba(var(--glow-color), 0.1);
-          transform: scale(1.01);
+          box-shadow: 0 0 30px -10px var(--glow-color);
+          transform: translateY(-2px);
         }
 
         .node-header {
@@ -58,32 +65,22 @@ const Quadrant = ({ id, title, glowColor, children }: QuadrantProps) => {
           margin-bottom: 1.5rem;
           position: relative;
           z-index: 10;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          padding-bottom: 0.5rem;
         }
 
         .status-bit {
-          width: 8px;
-          height: 8px;
+          width: 6px;
+          height: 6px;
           background: var(--glow-color);
           box-shadow: 0 0 8px var(--glow-color);
-          border-radius: 1px;
-        }
-
-        h4 {
-          font-size: 0.75rem;
-          color: var(--text-dim);
-          letter-spacing: 0.1em;
         }
 
         .node-grid-overlay {
           position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-image: 
-            linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-          background-size: 20px 20px;
+          top: 0; left: 0; right: 0; bottom: 0;
+          background-image: radial-gradient(circle at 2px 2px, rgba(255, 255, 255, 0.02) 1px, transparent 0);
+          background-size: 24px 24px;
           pointer-events: none;
         }
 
@@ -93,7 +90,7 @@ const Quadrant = ({ id, title, glowColor, children }: QuadrantProps) => {
           gap: 12px;
           position: relative;
           z-index: 10;
-          min-height: 100%;
+          min-height: 200px;
         }
       `}</style>
     </div>

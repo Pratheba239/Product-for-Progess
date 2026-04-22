@@ -47,12 +47,12 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="sidebar">
+    <div className="sidebar glass-panel">
       <div className="sidebar-header">
         <div className="logo-glow">
           <Zap size={24} className="text-glow-green" />
         </div>
-        <span className="mono text-glow-green">PP_OS</span>
+        <span className="mono text-glow-green tracking-widest">PP_OS</span>
       </div>
       
       <nav className="nav-container">
@@ -65,7 +65,7 @@ const Sidebar = () => {
               <div className={`nav-item ${isActive ? 'active' : ''}`}>
                 <Icon size={20} />
                 {isActive && <div className="active-indicator" />}
-                <span className="nav-tooltip mono">{item.title}</span>
+                <span className="nav-tooltip mono uppercase text-xs">{item.title}</span>
               </div>
             </Link>
           );
@@ -75,25 +75,25 @@ const Sidebar = () => {
       <div className="sidebar-footer">
         <div className="nav-item">
           <Settings size={20} />
-          <span className="nav-tooltip mono">Settings</span>
+          <span className="nav-tooltip mono uppercase text-xs">Settings</span>
         </div>
         
         {isAuthenticated ? (
           <div className="nav-item" onClick={handleLogout}>
             <LogOut size={20} className="text-glow-red" />
-            <span className="nav-tooltip mono">Logout</span>
+            <span className="nav-tooltip mono uppercase text-xs">Logout</span>
           </div>
         ) : (
           <div className="nav-item" onClick={handleLogin}>
             <LogIn size={20} className="text-glow-cyan" />
-            <span className="nav-tooltip mono">Login</span>
+            <span className="nav-tooltip mono uppercase text-xs">Login</span>
           </div>
         )}
 
         <div className="nav-item user-status">
           <div className={`status-dot ${isAuthenticated ? 'online' : 'offline'}`}></div>
           <User size={20} />
-          <span className="nav-tooltip mono">{isAuthenticated ? accounts[0].username : 'Guest'}</span>
+          <span className="nav-tooltip mono uppercase text-xs">{isAuthenticated ? accounts[0]?.username : 'Guest'}</span>
         </div>
       </div>
 
@@ -101,8 +101,7 @@ const Sidebar = () => {
         .sidebar {
           width: var(--sidebar-width);
           height: 100vh;
-          background: var(--bg-secondary);
-          border-right: 1px solid rgba(57, 255, 20, 0.1);
+          border-right: 1px solid rgba(255, 255, 255, 0.05);
           display: flex;
           flex-direction: column;
           align-items: center;

@@ -32,9 +32,15 @@ if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
 const app = express();
 const port = process.env.PORT || 5000;
 
+// Production settings
+app.set('trust proxy', 1);
+
 // Middleware
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    credentials: true
+}));
 app.use(express.json());
 
 // Routes

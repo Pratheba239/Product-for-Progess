@@ -3,15 +3,14 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const dbConnection: any = {
+const dbConnection: any = process.env.DATABASE_URL || {
   server: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'sa',
-  password: process.env.DB_PASSWORD || '',
+  password: process.env.DB_PASSWORD || 'YourStrong!Passw0rd',
   database: process.env.DB_NAME || 'ppdb',
   options: {
-    encrypt: true,
-    enableArithAbort: true,
-    trustServerCertificate: true
+    encrypt: process.env.NODE_ENV === 'production',
+    trustServerCertificate: process.env.NODE_ENV !== 'production'
   }
 };
 
