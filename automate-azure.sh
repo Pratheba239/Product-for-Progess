@@ -8,15 +8,14 @@
 
 # --- CONFIGURATION (Feel free to change) ---
 RESOURCE_GROUP="PP_App_Resources"
-LOCATION="southeastasia" # Found via policy check: Subscription allows [austriaeast, uaenorth, southeastasia, koreacentral, malaysiawest]
-RANDOM_ID=$RANDOM
-SQL_SERVER_NAME="pp-sql-$RANDOM_ID"
+LOCATION="southeastasia" # Known working region for this student subscription
+SQL_SERVER_NAME="pp-sql-server-prod"
 SQL_DB_NAME="ppdb"
 SQL_ADMIN_USER="dbadmin"
 SQL_ADMIN_PASSWORD="Once@time26"
-APP_SERVICE_NAME="pp-api-$RANDOM_ID"
+APP_SERVICE_NAME="pp-api-backend-prod"
 APP_SERVICE_PLAN="pp-backend-plan"
-SWA_NAME="pp-frontend-$RANDOM_ID"
+SWA_NAME="pp-frontend-swa-prod"
 REPO_URL="https://github.com/Pratheba239/Product-for-Progess"
 # -------------------------------------------
 
