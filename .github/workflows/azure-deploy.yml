@@ -103,6 +103,6 @@ jobs:
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v3
         with:
-          app-name: ${{ secrets.AZURE_APP_SERVICE_NAME }}
+          app-name: "pp-api-531"
           package: ./server/dist
           startup-command: "node index.js"
