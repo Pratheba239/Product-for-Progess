@@ -9,6 +9,7 @@ import groceryRoutes from './routes/groceries.js';
 import moodRoutes from './routes/mood.js';
 import menstrualRoutes from './routes/menstrual.js';
 import documentRoutes from './routes/documents.js';
+import eventRoutes from './routes/events.js';
 import { authenticate } from './middleware/auth.js';
 
 // Environment variables
@@ -50,6 +51,7 @@ app.use('/api/groceries', authenticate, groceryRoutes);
 app.use('/api/mood', authenticate, moodRoutes);
 app.use('/api/menstrual', authenticate, menstrualRoutes);
 app.use('/api/documents', authenticate, documentRoutes);
+app.use('/api/events', authenticate, eventRoutes);
 
 app.get('/api/health', (req, res) => {
     res.json({ status: 'healthy', version: '1.0.0' });

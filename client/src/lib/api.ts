@@ -45,4 +45,9 @@ export const menstrualApi = {
   log: (data: any) => api.post('/menstrual', data),
 };
 
+export const eventsApi = {
+  getAll: (userId: string) => api.get(`/events?userId=${userId}`),
+  create: (data: any) => api.post('/events', data),
+};
+
 export default api;
