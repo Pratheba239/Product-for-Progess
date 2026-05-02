@@ -58,7 +58,11 @@ echo "Setting GitHub Secrets..."
 if command -v gh &> /dev/null
 then
     # Note: Requires 'gh auth login' or GH_TOKEN to be set
-    gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN --body "$SWA_TOKEN" --repo $REPO_URL
+    if [ -n "$SWA_TOKEN" ]; then
+        gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN --body "$SWA_TOKEN" --repo $REPO_URL
+    else
+        echo "⚠️ SWA Token is empty. Skipping setting AZURE_STATIC_WEB_APPS_API_TOKEN."
+    fi
     gh secret set AZURE_APP_SERVICE_NAME --body "$APP_SERVICE_NAME" --repo $REPO_URL
     gh secret set DB_HOST --body "${SQL_SERVER_NAME}.database.windows.net" --repo $REPO_URL
     gh secret set DB_USER --body "$SQL_ADMIN_USER" --repo $REPO_URL
