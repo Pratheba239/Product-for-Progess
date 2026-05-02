@@ -30,8 +30,8 @@ echo "Creating Azure SQL Server ($SQL_SERVER_NAME)..."
 az sql server create --name $SQL_SERVER_NAME --resource-group $RESOURCE_GROUP --location $LOCATION --admin-user $SQL_ADMIN_USER --admin-password "$SQL_ADMIN_PASSWORD"
 
 echo "Creating Database: $SQL_DB_NAME (Standard Free Tier)..."
-# Using GeneralPurpose Serverless for SQL Free Offer compatibility
-az sql db create --resource-group $RESOURCE_GROUP --server $SQL_SERVER_NAME --name $SQL_DB_NAME --edition GeneralPurpose --compute-model Serverless --family Gen5 --capacity 0.5
+# Using Basic tier for reliable student provisioning
+az sql db create --resource-group $RESOURCE_GROUP --server $SQL_SERVER_NAME --name $SQL_DB_NAME --edition Basic --service-objective Basic
 
 echo "Opening Firewall for Azure Services..."
 az sql server firewall-rule create --resource-group $RESOURCE_GROUP --server $SQL_SERVER_NAME --name AllowAzureServices --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0
@@ -41,11 +41,11 @@ echo "Creating App Service Plan (FREE F1 TIER)..."
 az appservice plan create --name $APP_SERVICE_PLAN --resource-group $RESOURCE_GROUP --sku F1 --is-linux
 
 echo "Creating Web App: $APP_SERVICE_NAME..."
-az webapp create --resource-group $RESOURCE_GROUP --plan $APP_SERVICE_PLAN --name $APP_SERVICE_NAME --runtime "NODE:20-lts"
+az webapp create --resource-group $RESOURCE_GROUP --plan $APP_SERVICE_PLAN --name $APP_SERVICE_NAME --runtime "NODE:22-lts"
 
 # 4. Create Static Web App for Frontend
 echo "Creating Static Web App: $SWA_NAME..."
-SWA_TOKEN=$(az staticwebapp create --name $SWA_NAME --resource-group $RESOURCE_GROUP --source $REPO_URL --location $LOCATION --branch main --app-location "/client" --output-location ".next" --login-with-github --query "properties.apiKey" -o tsv)
+SWA_TOKEN=$(az staticwebapp create --name $SWA_NAME --resource-group $RESOURCE_GROUP --source $REPO_URL --location "eastasia" --branch main --app-location "/client" --output-location ".next" --login-with-github --query "properties.apiKey" -o tsv)
 
 # 5. Entra ID App Registration (CIAM)
 echo "Registering Entra ID Apps..."
