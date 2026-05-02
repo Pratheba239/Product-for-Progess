@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { msalInstance } from '../components/AuthProvider';
+import { loginRequest } from '../config/authConfig';
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api', // Updated port to 5000 to match backend
@@ -6,6 +8,28 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+// Interceptor for attaching token
+api.interceptors.request.use(
+  async (config) => {
+    try {
+      // Get the active account or the first one available
+      const account = msalInstance.getActiveAccount() || msalInstance.getAllAccounts()[0];
+      if (account) {
+        const response = await msalInstance.acquireTokenSilent({
+          ...loginRequest,
+          account: account
+        });
+        // We use idToken as the backend expects audience to be the Client ID
+        config.headers.Authorization = `Bearer ${response.idToken}`;
+      }
+    } catch (error) {
+      console.error('Failed to acquire token silently', error);
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 // Interceptor for logging/errors in Neon Style
 api.interceptors.response.use(
