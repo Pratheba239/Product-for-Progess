@@ -45,7 +45,7 @@ az webapp create --resource-group $RESOURCE_GROUP --plan $APP_SERVICE_PLAN --nam
 
 # 4. Create Static Web App for Frontend
 echo "Creating Static Web App: $SWA_NAME..."
-SWA_TOKEN=$(az staticwebapp create --name $SWA_NAME --resource-group $RESOURCE_GROUP --source $REPO_URL --location "eastus2" --branch main --app-location "/client" --output-location ".next" --login-with-github --query "properties.apiKey" -o tsv)
+SWA_TOKEN=$(az staticwebapp create --name $SWA_NAME --resource-group $RESOURCE_GROUP --source $REPO_URL --location "eastasia" --branch main --app-location "/client" --output-location ".next" --login-with-github --query "properties.apiKey" -o tsv)
 
 # 5. Entra ID App Registration (CIAM)
 echo "Registering Entra ID Apps..."
