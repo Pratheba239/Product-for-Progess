@@ -43,9 +43,11 @@ az appservice plan create --name $APP_SERVICE_PLAN --resource-group $RESOURCE_GR
 echo "Creating Web App: $APP_SERVICE_NAME..."
 az webapp create --resource-group $RESOURCE_GROUP --plan $APP_SERVICE_PLAN --name $APP_SERVICE_NAME --runtime "NODE:22-lts"
 
-# 4. Create Static Web App for Frontend
-echo "Creating Static Web App: $SWA_NAME..."
-SWA_TOKEN=$(az staticwebapp create --name $SWA_NAME --resource-group $RESOURCE_GROUP --source $REPO_URL --location "centralus" --branch main --app-location "/client" --output-location ".next" --login-with-github --query "properties.apiKey" -o tsv)
+FRONTEND_APP_NAME="pp-frontend-app-prod"
+
+# 4. Create Web App for Frontend
+echo "Creating Frontend Web App: $FRONTEND_APP_NAME..."
+az webapp create --resource-group $RESOURCE_GROUP --plan $APP_SERVICE_PLAN --name $FRONTEND_APP_NAME --runtime "NODE:22-lts"
 
 # 5. Entra ID App Registration (CIAM)
 echo "Registering Entra ID Apps..."
@@ -58,11 +60,7 @@ echo "Setting GitHub Secrets..."
 if command -v gh &> /dev/null
 then
     # Note: Requires 'gh auth login' or GH_TOKEN to be set
-    if [ -n "$SWA_TOKEN" ]; then
-        gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN --body "$SWA_TOKEN" --repo $REPO_URL
-    else
-        echo "⚠️ SWA Token is empty. Skipping setting AZURE_STATIC_WEB_APPS_API_TOKEN."
-    fi
+    gh secret set AZURE_FRONTEND_APP_NAME --body "$FRONTEND_APP_NAME" --repo $REPO_URL
     gh secret set AZURE_APP_SERVICE_NAME --body "$APP_SERVICE_NAME" --repo $REPO_URL
     gh secret set DB_HOST --body "${SQL_SERVER_NAME}.database.windows.net" --repo $REPO_URL
     gh secret set DB_USER --body "$SQL_ADMIN_USER" --repo $REPO_URL
